@@ -66,6 +66,17 @@ set so=10
 
 "}}}
 
+" PLUGINS {{{
+
+if &loadplugins
+  if has('packages')
+    packadd! vim-gitgutter
+    packadd! vim-javascript
+  endif
+endif
+
+"}}} 
+
 " VIM-GITGUTTER {{{
 
 set updatetime=100
