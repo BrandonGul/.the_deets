@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# ADD GIT MODULES
+git submodule init
+git submodule update
+
+# SYMLINK VIM CONFIG
+ln -fns $(pwd)/vim_config/vimrc $HOME/.vimrc
+ln -fns $(pwd)/vim_config/vim $HOME/.vim
