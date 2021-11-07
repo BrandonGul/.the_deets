@@ -4,3 +4,6 @@
 [submodule "vim-javascript"]
 	path = vim_config/vim/pack/plugins/opt/vim-javascript
 	url = https://github.com/pangloss/vim-javascript.git
+[submodule "goyo.vim"]
+	path = vim_config/vim/pack/plugins/opt/goyo
+	url = https://github.com/junegunn/goyo.vim.git
