@@ -7,3 +7,6 @@
 [submodule "goyo.vim"]
 	path = vim_config/vim/pack/plugins/opt/goyo
 	url = https://github.com/junegunn/goyo.vim.git
+[submodule "zsh-syntax-highlighting"]
+	path = zsh_config/plugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git

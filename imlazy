@@ -4,6 +4,10 @@
 git submodule init
 git submodule update
 
+# HIDE LAST LOGIN
+touch $HOME/.hushlogin
+
 # SYMLINK VIM CONFIG
 ln -fns $(pwd)/vim_config/vimrc $HOME/.vimrc
 ln -fns $(pwd)/vim_config/vim $HOME/.vim
+ln -fns $(pwd)/zsh_config/zshrc $HOME/.zshrc
