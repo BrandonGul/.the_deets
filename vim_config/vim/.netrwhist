@@ -1,6 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =4
-let g:netrw_dirhist_4='/Users/Brandon/Documents/github/GithubTwitchBot/TwitchBot/client-js'
-let g:netrw_dirhist_3='/Users/Brandon/Documents/github/GithubTwitchBot/TwitchBot'
-let g:netrw_dirhist_2='/Users/Brandon/Documents/github/GithubTwitchBot/TwitchBot/bot'
-let g:netrw_dirhist_1='/Users/Brandon/Documents/github/GithubTwitchBot/TwitchBot'
