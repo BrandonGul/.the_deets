@@ -22,6 +22,9 @@ require("awful.hotkeys_popup.keys")
 local debian = require("debian.menu")
 local has_fdo, freedesktop = pcall(require, "freedesktop")
 
+-- Widgets
+local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -229,6 +232,9 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             --wibox.widget.systray(),
+	    volume_widget{
+              widget_type = 'icon'
+	    },
             mytextclock,
             --s.mylayoutbox,
         },
@@ -335,7 +341,17 @@ globalkeys = gears.table.join(
     awful.key({ modkey },            "]",     function () 
 	awful.util.spawn('brave-browser') end,
 	      {description = "Run Brave Browser", group = "Applications"}),
-		
+
+    -- Audio
+    awful.key({ modkey }, "u", function() 
+      volume_widget:inc(5) end,
+      {description = "volume up", group = "Audio"}
+    ),
+
+    awful.key({ modkey }, "i", function() 
+      volume_widget:dec(5) end,
+      {description = "volume down", group = "Audio"}
+    ),
 
     awful.key({ modkey }, "x",
               function ()
