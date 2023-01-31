@@ -38,3 +38,7 @@ PS1="%F{#b1bfa1}%1~%f %F{#e06f67}X%f "
 #source $HOME/.the_deets/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 #END :)
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
