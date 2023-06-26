@@ -199,14 +199,14 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: seoul256
-time([[Config for seoul256]], true)
-try_loadstring("\27LJ\2\n5\0\0\2\0\3\0\0056\0\0\0009\0\1\0)\1ë\0=\1\2\0K\0\1\0\24seoul256_background\6g\bvim\0", "config", "seoul256")
-time([[Config for seoul256]], false)
 -- Config for: rose-pine
 time([[Config for rose-pine]], true)
 try_loadstring("\27LJ\2\ne\0\0\3\0\6\0\n6\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\0016\0\3\0009\0\4\0'\2\5\0B\0\2\1K\0\1\0\26colorscheme rose-pine\bcmd\bvim\nsetup\14rose-pine\frequire\0", "config", "rose-pine")
 time([[Config for rose-pine]], false)
+-- Config for: seoul256
+time([[Config for seoul256]], true)
+try_loadstring("\27LJ\2\n5\0\0\2\0\3\0\0056\0\0\0009\0\1\0)\1ë\0=\1\2\0K\0\1\0\24seoul256_background\6g\bvim\0", "config", "seoul256")
+time([[Config for seoul256]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then

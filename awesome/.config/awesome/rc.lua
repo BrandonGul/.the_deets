@@ -23,7 +23,10 @@ local debian = require("debian.menu")
 local has_fdo, freedesktop = pcall(require, "freedesktop")
 
 -- Widgets
-local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+local battery_widget = require("battery-widget")
+local volume         = require("widgets.volume")
+local brightness     = require("widgets.brightness")
+local shape          = function(cr,w,h) gears.shape.rounded_rect(cr,w,h, 25) end
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -52,10 +55,10 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "alacritty"
+terminal = "kitty"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -190,7 +193,7 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "1", "2", "3", "4", "5" }, s, awful.layout.layouts[1])
+    awful.tag({ " ", " ", " ", " ", "" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -216,29 +219,65 @@ awful.screen.connect_for_each_screen(function(s)
         --buttons = tasklist_buttons
     }
 
-    -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
+    local w = awful.wibox({screen = s, height = 25, width = 1897, bg = "#00000000"})
+    w:setup {
+      widget = wibox.container.background,
+      bg = '#E9DCC9',
+      shape = shape,
+      {
+        widget = wibox.container.background,
+      }
+    }
 
-    -- Add widgets to the wibox
+    -- Create the wibox
+    s.mywibox = awful.wibox({screen = s, height = 25, width = 1820, bg = "#0000000"})
+
     s.mywibox:setup {
-        layout = wibox.layout.align.horizontal,
-        { -- Left widgets
-            layout = wibox.layout.fixed.horizontal,
-            --mylauncher,
+        {
+            -- LEFT
             s.mytaglist,
             s.mypromptbox,
-        },
-        s.mytasklist, -- Middle widget
-        { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            --wibox.widget.systray(),
-	    volume_widget{
-              widget_type = 'icon'
-	    },
-            mytextclock,
-            --s.mylayoutbox,
         },
+        nil,
+        {
+            -- RIGHT
+            battery_widget {
+                ac_prefix = {
+                    { 100, "<span font=\"SFMono 10\">󰂄 </span>" },
+                },
+                battery_prefix = {
+                    { 10, "<span font=\"SFMono 10\">󰁺 </span>" },
+                    { 20, "<span font=\"SFMono 10\">󰁻 </span>" },
+                    { 30, "<span font=\"SFMono 10\">󰁼 </span>" },
+                    { 40, "<span font=\"SFMono 10\">󰁽 </span>" },
+                    { 50, "<span font=\"SFMono 10\">󰁾 </span>" },
+                    { 60, "<span font=\"SFMono 10\">󰁿 </span>" },
+                    { 70, "<span font=\"SFMono 10\">󰂀 </span>" },
+                    { 80, "<span font=\"SFMono 10\">󰂁 </span>" },
+                    { 90, "<span font=\"SFMono 10\">󰂂 </span>" },
+                    { 100, "<span font=\"SFMono 10\">󰁹 </span>" },
+                },
+                percent_colors = {
+                    {999, "#000000" },
+                },
+            },
+            volume(),
+            mytextclock,
+            spacing = 200,
+            layout = wibox.layout.fixed.horizontal,
+        },
+        widget = wibox.container.background,
+        layout = wibox.layout.align.horizontal,
     }
+
+    w.visible = true
+    w.y = 15
+    w:struts{ left = 0, right = 0, bottom = 0, top = 0 }
+
+    s.mywibox.y = 15
+    s.mywibox:struts{ top = 40 }
+    brightness()
 end)
 -- }}}
 
@@ -334,38 +373,60 @@ globalkeys = gears.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () 
-	awful.util.spawn('dmenu_run') end,
+    awful.key({ modkey },            " ",     function ()
+	awful.util.spawn('rofi -show drun') end,
 	      {description = "run dmenu", group = "launcher"}),
 
-    awful.key({ modkey },            "]",     function () 
+    awful.key({ modkey },            "]",     function ()
 	awful.util.spawn('brave-browser') end,
 	      {description = "Run Brave Browser", group = "Applications"}),
 
+  -- Brightness
+    awful.key({}, "XF86MonBrightnessUp", function()
+        brightness:up()
+      end,
+      {description = "Brightness up", group = "Brightness"}
+    ),
+
+    awful.key({}, "XF86MonBrightnessDown", function()
+        brightness:down()
+      end,
+      {description = "Brightness down", group = "Brightness"}
+    ),
+  --
+
     -- Audio
-    awful.key({ modkey }, "u", function() 
-      volume_widget:inc(5) end,
-      {description = "volume up", group = "Audio"}
-    ),
+  awful.key({}, "XF86AudioRaiseVolume", function()
+      volume:up()
+    end,
+    {description = "volume up", group = "Audio"}
+  ),
 
-    awful.key({ modkey }, "i", function() 
-      volume_widget:dec(5) end,
-      {description = "volume down", group = "Audio"}
-    ),
+  awful.key({}, "XF86AudioLowerVolume", function()
+      volume:down()
+    end,
+    {description = "volume down", group = "Audio"}
+  ),
 
-    awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run {
-                    prompt       = "Run Lua code: ",
-                    textbox      = awful.screen.focused().mypromptbox.widget,
-                    exe_callback = awful.util.eval,
-                    history_path = awful.util.get_cache_dir() .. "/history_eval"
-                  }
-              end,
-              {description = "lua execute prompt", group = "awesome"}),
-    -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+  awful.key({}, "XF86AudioMute", function()
+      volume:mute()
+    end,
+    {description = "volume up", group = "Audio"}
+  ),
+
+  awful.key({ modkey }, "x",
+            function ()
+                awful.prompt.run {
+                  prompt       = "Run Lua code: ",
+                  textbox      = awful.screen.focused().mypromptbox.widget,
+                  exe_callback = awful.util.eval,
+                  history_path = awful.util.get_cache_dir() .. "/history_eval"
+                }
+            end,
+            {description = "lua execute prompt", group = "awesome"}),
+  -- Menubar
+  awful.key({ modkey }, "p", function() menubar.show() end,
+            {description = "show the menubar", group = "launcher"})
 )
 
 clientkeys = gears.table.join(
@@ -606,9 +667,17 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- Autostart Applications
 
 awful.spawn.with_shell('compton')
-awful.spawn.with_shell('wal -R')
+awful.spawn.with_shell('nitrogen --restore')
 
 -- Gaps 
 
-beautiful.useless_gap = 6 
-awful.spawn.with_shell('nitrogen --restore')
+beautiful.useless_gap = 6
+beautiful.fg_normal = "#FF0000"
+beautiful.menu_fg_normal = "#FF0000"
+beautiful.wibar_fg = "#FF0000"
+beautiful.taglist_fg_empty = "#ABA49D"
+beautiful.taglist_fg_occupied = "#ABA49D"
+--beautiful.taglist_fg_occupied = "#9593D9"
+beautiful.taglist_bg_focus = "#00000000"
+beautiful.taglist_fg_focus = "#0F1108"
+beautiful.taglist_font = "SFMono, 3270NerdFontMono 14"
