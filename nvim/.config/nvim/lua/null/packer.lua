@@ -13,7 +13,7 @@ return require('packer').startup(function(use)
     as = 'rose-pine',
     config = function()
         require("rose-pine").setup()
-        vim.cmd('colorscheme rose-pine')
+        vim.cmd('colorscheme rose-pine-dawn')
     end
   })
 
@@ -57,6 +57,14 @@ return require('packer').startup(function(use)
   }
 
   use ('airblade/vim-gitgutter')
-  use("github/copilot.vim")
+  use ({
+    'christoomey/vim-tmux-navigator',
+    config = function()
+      vim.keymap.set('n', "<C-h>", "<cmd>TmuxNavigateLeft<CR>")
+      vim.keymap.set('n', "<C-j>", "<cmd>TmuxNavigateDown<CR>")
+      vim.keymap.set('n', "<C-k>", "<cmd>TmuxNavigateUp<CR>")
+      vim.keymap.set('n', "<C-l>", "<cmd>TmuxNavigateRight<CR>")
+    end
+    })
 
 end)
