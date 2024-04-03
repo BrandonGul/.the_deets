@@ -8,9 +8,3 @@ background_opacity 0.95
 cursor_shape beam 
 cursor_beam_thickness 7
 cursor_blink_interval 0 
-
-
-# BEGIN_KITTY_THEME
-# Rosé Pine Dawn
-include current-theme.conf
-# END_KITTY_THEME

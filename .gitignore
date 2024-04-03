@@ -2,3 +2,4 @@
 .DS_Store
 .netrwhist
 awesome/.config/awesome/battery-widget/
+tmux/.config/tmux/plugins/*
