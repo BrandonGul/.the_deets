@@ -4,7 +4,7 @@ return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
   use {
-    'nvim-telescope/telescope.nvim', tag = '0.1.1',
+    'nvim-telescope/telescope.nvim', tag = '0.1.6',
     requires = { {'nvim-lua/plenary.nvim'} }
  }
 
@@ -13,7 +13,7 @@ return require('packer').startup(function(use)
     as = 'rose-pine',
     config = function()
         require("rose-pine").setup()
-        vim.cmd('colorscheme rose-pine')
+        vim.cmd('colorscheme rose-pine-dawn')
     end
   })
 
@@ -27,8 +27,6 @@ return require('packer').startup(function(use)
 
   use ('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
   use ('nvim-treesitter/playground')
-
-  use ('ThePrimeagen/harpoon')
 
   use ('mbbill/undotree')
   use ('tpope/vim-fugitive')
@@ -58,5 +56,6 @@ return require('packer').startup(function(use)
 
   use ('airblade/vim-gitgutter')
   use("github/copilot.vim")
+  use("christoomey/vim-tmux-navigator")
 
 end)
